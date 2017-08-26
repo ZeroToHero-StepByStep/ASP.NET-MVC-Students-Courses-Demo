@@ -1,0 +1,176 @@
+﻿@model IC_Assignment.Models.StudnetFormViewModel
+
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/bootstrap") ;
+}
+
+<h2>Create student</h2>
+@*<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />*@
+@*<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>*@
+@*<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>*@
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+@*<script src="~/Scripts/jquery.validate.js"></script>*@
+
+
+@*<script src="~/Scripts/jquery-3.1.1.js"></script>*@
+@*<script src="~/Scripts/jquery-ui-1.12.1.js"></script>*@
+@*<link rel="stylesheet" href="~/Content/themes/base/jquery-ui.css"/>*@
+@*<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>*@
+@*<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />*@
+
+
+
+@*<form id="createstudentFormId">*@
+<div class="form-horizontal">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Student.Name, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Student.Name, new { @class = "form-control", @id = "studentNameId", @required = "true", @minlength = 2 })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Student.Gender, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EnumDropDownListFor(model => model.Student.Gender, new { @class = "form-control", @id = "genderId", @required = "true" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Student.Age, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Student.Age, new { @class = "form-control", @id = "ageId", @require = "true" })
+            @Html.ValidationMessageFor(model => model.Student.Age, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Student.City, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Student.City, new { @class = "form-control", @id = "cityId", @required = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Coures</label>
+        <div class="col-md-2">
+            @Html.DropDownList("CourseId", new SelectList(Model.Courses, "Id", "Name"), "Select Courses", new { @class = "form-control", @id = "courseId" })
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" id="addCourse">Add </a>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <ul id="courses" class="list-group coursegroup ">
+                @if (Model.Student.CoursesEnrolled != null)
+                {
+                    foreach (var courseItem in Model.Student.CoursesEnrolled)
+                    {
+                        <li class='list-group-item' id='deleteCourse-li'>
+                            <span id='courseTextId'>@courseItem.Name</span>
+                            <a class='btn btn-warning' id='deleteCourseId'> Delete</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" id="submitButtonId" value="Save" class="btn btn-default btn-primary" studentId="@Model.Student.Id" />
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<div id="successDialogId" title="Create student">
+    <strong>Success</strong>
+</div>
+<div id="failedDialogId" title="Create student">
+    <strong>Failed</strong>
+</div>
+@*</form>*@
+
+
+
+
+
+<script type="text/javascript">
+    //    $("#createstudentFormId").validate();
+
+    //    $( "#successDialogId").dialog({
+    //        autoOpen: false
+    //    });
+    //
+    //    $("#failedDialogId").dialog({
+    //        autoOpen: false
+    //    });
+
+    var student = {CoursesEnrolled:[]}
+    //    var student = @Html.Raw(Json.Encode(Model.Student));
+    var coursesEnrolled = @Html.Raw(Json.Encode(@Model.Student.CoursesEnrolled)) ;
+    if (coursesEnrolled != null) {
+        student.CoursesEnrolled = coursesEnrolled; 
+    }
+    $(document).ready(function() {
+
+        $('#addCourse').click(function() {
+            var courseIndex = $('#courseId').val() - 1;
+            var courseList = @Html.Raw(Json.Encode(Model.Courses.ToList()));
+            var courseObject = courseList[courseIndex];
+            student.CoursesEnrolled.push(courseObject);
+            $('#courses').append("<li class='list-group-item' id ='deleteCourse-li'><span id='courseTextId'>" +
+                courseObject.Name +
+                "</span> <a class='btn btn-warning' id = 'deleteCourseId'> Delete</a></li>");
+        });
+
+        $('.coursegroup').on('click',
+            '#deleteCourseId',
+            function() {
+                var selectedCoureName = $('#courseTextId').text();
+                alert(selectedCoureName);
+                for (var i = 0; i < student.CoursesEnrolled.length; i ++) {
+                    var courseSelected = student.CoursesEnrolled[i];
+                    if (selectedCoureName === courseSelected.Name) {
+                        student.CoursesEnrolled.splice(i, 1);
+                    }
+                }
+                $('#deleteCourse-li').remove();
+            });
+
+
+        $('#submitButtonId').click(function(e) {
+            //            var submitButton = $(this).attr('studentId');
+            //            alert(submitButton);
+            student.Id = $(this).attr('studentId');
+            student.Name = $('#studentNameId').val();
+            student.Age = $('#ageId').val();
+            student.Gender = $('#genderId').val();
+            student.City = $('#cityId').val();
+            $.ajax({
+                url: "/Student/Save/",
+                method: "POST",
+                data: student,
+                success: function(data, status, xhr) {
+                    console.log('create student success');
+                    alert('successful');
+                },
+                error: function(data, status, xhr) {
+                    console.log(" data " + data +" status " + status + " xhr " + xhr );
+                    alert('failed');
+                }
+            });
+
+        });
+    });
+</script>

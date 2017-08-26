@@ -1,0 +1,42 @@
+﻿@model IC_Assignment.Models.Student
+
+@{
+    ViewBag.Title = "Detail";
+}
+<head>
+    <link rel="stylesheet" href="~/Content/Site.css" />
+</head>
+<h1>Customer Detail</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">@Html.DisplayNameFor(model => model.City): </div>
+        <div class="col-md-3">@Html.DisplayFor(model => model.City)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">@Html.DisplayNameFor(model => model.Age):</div>
+        <div class="col-md-3">@Html.DisplayFor(model => model.Age)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"> @Html.DisplayNameFor(model => model.Name):</div>
+        <div class="col-md-2"> @Html.DisplayFor(model => model.Name)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Course Name</div>
+                <div class="panel-body">
+                    <ul>
+                        @foreach (var courseName in Model.CoursesEnrolled.ToList())
+                        {
+                            <li>@courseName.Name</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index" ,"",  new {@class="btn btn-primary"})
+</p>

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Reflection.Emit;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -20,9 +21,27 @@ namespace IC_Assignment.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Course> Courses { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Student>()
+                .HasMany(student => student.CoursesEnrolled)
+                .WithMany()
+                .Map(m =>
+                {
+                    m.ToTable("StudentsCourses");
+                    m.MapLeftKey("StudentId");
+                    m.MapRightKey("CourseId");
+                    
+                });
         }
 
         public static ApplicationDbContext Create()

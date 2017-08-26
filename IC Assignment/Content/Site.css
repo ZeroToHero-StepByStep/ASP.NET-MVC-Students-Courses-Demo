@@ -10,8 +10,8 @@
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
+/*   will truncate terms that are too long to fit in the left column */
+
 .dl-horizontal dt {
     white-space: normal;
 }
@@ -22,3 +22,22 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.heading  td{
+    font-weight: bold;
+    font-size: large;
+}
+
+
+.table-hover .tr {
+    background-color: aqua;
+}
+
+
+.panel ul li {
+    list-style: none;
+}
+
+
+
+
