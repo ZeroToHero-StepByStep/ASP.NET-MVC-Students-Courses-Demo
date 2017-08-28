@@ -2,7 +2,7 @@
 
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = Model.title;
 }
 
 @section Scripts
@@ -10,66 +10,53 @@
     @Scripts.Render("~/bundles/bootstrap") ;
 }
 
-<h2>Create student</h2>
-@*<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />*@
-@*<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>*@
-@*<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>*@
+<h2>@Model.title</h2>
 <script src="~/Scripts/jquery-3.1.1.js"></script>
-@*<script src="~/Scripts/jquery.validate.js"></script>*@
 
 
-@*<script src="~/Scripts/jquery-3.1.1.js"></script>*@
-@*<script src="~/Scripts/jquery-ui-1.12.1.js"></script>*@
-@*<link rel="stylesheet" href="~/Content/themes/base/jquery-ui.css"/>*@
-@*<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>*@
-@*<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />*@
-
-
-
-@*<form id="createstudentFormId">*@
 <div class="form-horizontal">
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.Student.Name, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        @Html.LabelFor(model => model.Student.Name, new { @class = "control-label col-md-1" })
+        <div class="col-md-4">
             @Html.TextBoxFor(model => model.Student.Name, new { @class = "form-control", @id = "studentNameId", @required = "true", @minlength = 2 })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Student.Gender, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        @Html.LabelFor(model => model.Student.Gender, new { @class = "control-label col-md-1" })
+        <div class="col-md-4">
             @Html.EnumDropDownListFor(model => model.Student.Gender, new { @class = "form-control", @id = "genderId", @required = "true" })
         </div>
     </div>
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Student.Age, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        @Html.LabelFor(model => model.Student.Age, new { @class = "control-label col-md-1" })
+        <div class="col-md-4">
             @Html.TextBoxFor(model => model.Student.Age, new { @class = "form-control", @id = "ageId", @require = "true" })
             @Html.ValidationMessageFor(model => model.Student.Age, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Student.City, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        @Html.LabelFor(model => model.Student.City, new { @class = "control-label col-md-1" })
+        <div class="col-md-4">
             @Html.TextBoxFor(model => model.Student.City, new { @class = "form-control", @id = "cityId", @required = "true" })
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-md-2">Coures</label>
-        <div class="col-md-2">
-            @Html.DropDownList("CourseId", new SelectList(Model.Courses, "Id", "Name"), "Select Courses", new { @class = "form-control", @id = "courseId" })
+        <label class="control-label col-md-1">Coures</label>
+        <div class="dropdown col-md-2">
+            @Html.DropDownList("CourseId", new SelectList(Model.Courses, "Id", "Name"), "Select Courses", new { @class = "form-control dropdown-toggle", @id = "courseId" })
         </div>
         <div class="col-md-2">
             <a class="btn btn-primary" id="addCourse">Add </a>
         </div>
     </div>
     <div class="row">
-        <div>
+        <div class="col-md-5">
             <ul id="courses" class="list-group coursegroup ">
                 @if (Model.Student.CoursesEnrolled != null)
                 {
@@ -99,22 +86,12 @@
 <div id="failedDialogId" title="Create student">
     <strong>Failed</strong>
 </div>
-@*</form>*@
 
 
 
 
 
 <script type="text/javascript">
-    //    $("#createstudentFormId").validate();
-
-    //    $( "#successDialogId").dialog({
-    //        autoOpen: false
-    //    });
-    //
-    //    $("#failedDialogId").dialog({
-    //        autoOpen: false
-    //    });
 
     var student = {CoursesEnrolled:[]}
     //    var student = @Html.Raw(Json.Encode(Model.Student));
@@ -164,7 +141,7 @@
                 success: function(data, status, xhr) {
                     console.log('create student success');
                     BootstrapDialog.show({
-                        title: 'Create Customer',
+                        title: '@Model.title' ,
                         message: 'Success'
                 });
                 },
@@ -172,7 +149,7 @@
                     console.log(" data " + data +" status " + status + " xhr " + xhr );
 //                    alert('failed');
                     BootstrapDialog.show({
-                        title: 'Create Customre',
+                        title:  '@Model.title',
                         message: 'Failed'
                     });
 

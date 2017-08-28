@@ -73,7 +73,7 @@ namespace IC_Assignment.Controllers
             }
             else
             {
-                var studentInDb = _context.Students.Include(s =>s.CoursesEnrolled).SingleOrDefault(c => c.Id == student.Id);
+                var studentInDb = _context.Students.Include(s => s.CoursesEnrolled).SingleOrDefault(c => c.Id == student.Id);
                 if (studentInDb == null)
                 {
                     return HttpNotFound();
@@ -97,9 +97,9 @@ namespace IC_Assignment.Controllers
                 //                studentInDb.CoursesEnrolled = student.CoursesEnrolled;
                 //                foreach (var course in studentInDb.CoursesEnrolled)
                 //                {
-                //                    _context.Entry(course).State = EntityState.Unchanged; 
+                //                    _context.Entry(course).State = EntityState.Unchanged;
                 //                }
-//                _context.Students.Add(studentInDb);
+                //                _context.Students.Add(studentInDb);
                 //                _context.Courses.Attach(studentInDb.CoursesEnrolled);
             }
 
@@ -128,7 +128,7 @@ namespace IC_Assignment.Controllers
 
         public ActionResult Edit(int id)
         {
-            var studentInDb = _context.Students.Include(s =>s.CoursesEnrolled).SingleOrDefault(s => s.Id == id);
+            var studentInDb = _context.Students.Include(s => s.CoursesEnrolled).SingleOrDefault(s => s.Id == id);
             if (studentInDb == null)
             {
                 return HttpNotFound();
