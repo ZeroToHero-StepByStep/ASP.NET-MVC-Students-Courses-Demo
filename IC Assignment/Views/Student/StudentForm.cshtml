@@ -163,11 +163,19 @@
                 data: student,
                 success: function(data, status, xhr) {
                     console.log('create student success');
-                    alert('successful');
+                    BootstrapDialog.show({
+                        title: 'Create Customer',
+                        message: 'Success'
+                });
                 },
                 error: function(data, status, xhr) {
                     console.log(" data " + data +" status " + status + " xhr " + xhr );
-                    alert('failed');
+//                    alert('failed');
+                    BootstrapDialog.show({
+                        title: 'Create Customre',
+                        message: 'Failed'
+                    });
+
                 }
             });
 

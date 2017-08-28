@@ -16,7 +16,7 @@ namespace IC_Assignment.Controllers
         public StudentController()
         {
             _context = new ApplicationDbContext();
-//            _context.Configuration.AutoDetectChangesEnabled = false;
+            //            _context.Configuration.AutoDetectChangesEnabled = false;
             //            _context.Configuration.ProxyCreationEnabled = false;
         }
 
@@ -73,7 +73,7 @@ namespace IC_Assignment.Controllers
             }
             else
             {
-                var studentInDb = _context.Students.Include(c =>c.CoursesEnrolled).SingleOrDefault(c => c.Id == student.Id);
+                var studentInDb = _context.Students.Include(s =>s.CoursesEnrolled).SingleOrDefault(c => c.Id == student.Id);
                 if (studentInDb == null)
                 {
                     return HttpNotFound();
@@ -84,20 +84,23 @@ namespace IC_Assignment.Controllers
                 studentInDb.Gender = student.Gender;
 
                 var courseList = new List<Course>();
-                foreach (var courseSelect in student.CoursesEnrolled)
+                if (student.CoursesEnrolled != null)
                 {
-                    var courseInDb = _context.Courses.SingleOrDefault(course => course.Id == courseSelect.Id);
-                    courseList.Add(courseInDb);
+                    foreach (var courseSelect in student.CoursesEnrolled)
+                    {
+                        var courseInDb = _context.Courses.SingleOrDefault(course => course.Id == courseSelect.Id);
+                        courseList.Add(courseInDb);
+                    }
                 }
                 studentInDb.CoursesEnrolled = courseList;
 
-//                studentInDb.CoursesEnrolled = student.CoursesEnrolled;
-//                foreach (var course in studentInDb.CoursesEnrolled)
-//                {
-//                    _context.Entry(course).State = EntityState.Unchanged; 
-//                }
-//                _context.Students.Attach(studentInDb);
-//                _context.Courses.Attach(studentInDb.CoursesEnrolled);
+                //                studentInDb.CoursesEnrolled = student.CoursesEnrolled;
+                //                foreach (var course in studentInDb.CoursesEnrolled)
+                //                {
+                //                    _context.Entry(course).State = EntityState.Unchanged; 
+                //                }
+//                _context.Students.Add(studentInDb);
+                //                _context.Courses.Attach(studentInDb.CoursesEnrolled);
             }
 
             try
@@ -125,7 +128,7 @@ namespace IC_Assignment.Controllers
 
         public ActionResult Edit(int id)
         {
-            var studentInDb = _context.Students.Include(s => s.CoursesEnrolled).SingleOrDefault(s => s.Id == id);
+            var studentInDb = _context.Students.Include(s =>s.CoursesEnrolled).SingleOrDefault(s => s.Id == id);
             if (studentInDb == null)
             {
                 return HttpNotFound();

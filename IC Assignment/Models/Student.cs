@@ -10,9 +10,9 @@ namespace IC_Assignment.Models
 
         [MaxLength(20)]
         public string City { get; set; }
-       
-        [Range(16,58)]
-        public int  Age { get; set; }
+
+        [Range(16, 58)]
+        public int Age { get; set; }
         public Gender Gender { get; set; }
 
         public IList<Course> CoursesEnrolled { get; set; }
@@ -20,7 +20,7 @@ namespace IC_Assignment.Models
 
         [MaxLength(20)]
         public string Name { get; set; }
-      
+
     }
 
     public enum Gender
